@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BookReservationSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="Book_ID" />
+          </Key>
+          <Property Name="Book_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NumberInStock" Type="int" Nullable="false" />
+          <Property Name="Genre_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Client_ID" />
+          </Key>
+          <Property Name="Client_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateOfBirth" Type="datetime" Nullable="false" />
+          <Property Name="Type_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="Genre_ID" />
+          </Key>
+          <Property Name="Genre_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="Reservation_ID" />
+          </Key>
+          <Property Name="Reservation_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Book_ID" Type="int" Nullable="false" />
+          <Property Name="Client_ID" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="Type_ID" />
+          </Key>
+          <Property Name="Type_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Book_Genre">
+          <End Role="Genre" Type="Self.Genre" Multiplicity="1" />
+          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="Genre_ID" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="Genre_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Client_Client">
+          <End Role="Type" Type="Self.Type" Multiplicity="1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="Type_ID" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="Type_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservation_Book">
+          <End Role="Book" Type="Self.Book" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Book_ID" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="Book_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservation_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Client_ID" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="Client_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BookReservationSystemModelStoreContainer">
+          <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genre" EntityType="Self.Genre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reservation" EntityType="Self.Reservation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Type" EntityType="Self.Type" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Book_Genre" Association="Self.FK_Book_Genre">
+            <End Role="Genre" EntitySet="Genre" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Client_Client" Association="Self.FK_Client_Client">
+            <End Role="Type" EntitySet="Type" />
+            <End Role="Client" EntitySet="Client" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservation_Book" Association="Self.FK_Reservation_Book">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservation_Client" Association="Self.FK_Reservation_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BookReservationSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="Book_ID" />
+          </Key>
+          <Property Name="Book_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NumberInStock" Type="Int32" Nullable="false" />
+          <Property Name="Genre_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Genre" Relationship="Self.FK_Book_Genre" FromRole="Book" ToRole="Genre" />
+          <NavigationProperty Name="Reservations" Relationship="Self.FK_Reservation_Book" FromRole="Book" ToRole="Reservation" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Client_ID" />
+          </Key>
+          <Property Name="Client_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateOfBirth" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Type_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Type" Relationship="Self.FK_Client_Client" FromRole="Client" ToRole="Type" />
+          <NavigationProperty Name="Reservations" Relationship="Self.FK_Reservation_Client" FromRole="Client" ToRole="Reservation" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="Genre_ID" />
+          </Key>
+          <Property Name="Genre_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Books" Relationship="Self.FK_Book_Genre" FromRole="Genre" ToRole="Book" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="Reservation_ID" />
+          </Key>
+          <Property Name="Reservation_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Book_ID" Type="Int32" Nullable="false" />
+          <Property Name="Client_ID" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Book" Relationship="Self.FK_Reservation_Book" FromRole="Reservation" ToRole="Book" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_Reservation_Client" FromRole="Reservation" ToRole="Client" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="Type_ID" />
+          </Key>
+          <Property Name="Type_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK_Client_Client" FromRole="Type" ToRole="Client" />
+        </EntityType>
+        <Association Name="FK_Book_Genre">
+          <End Role="Genre" Type="Self.Genre" Multiplicity="1" />
+          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="Genre_ID" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="Genre_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservation_Book">
+          <End Role="Book" Type="Self.Book" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Book_ID" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="Book_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Client_Client">
+          <End Role="Type" Type="Self.Type" Multiplicity="1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="Type_ID" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="Type_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservation_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Client_ID" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="Client_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BookReservationSystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Books" EntityType="Self.Book" />
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="Genres" EntityType="Self.Genre" />
+          <EntitySet Name="Reservations" EntityType="Self.Reservation" />
+          <EntitySet Name="Types" EntityType="Self.Type" />
+          <AssociationSet Name="FK_Book_Genre" Association="Self.FK_Book_Genre">
+            <End Role="Genre" EntitySet="Genres" />
+            <End Role="Book" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservation_Book" Association="Self.FK_Reservation_Book">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Reservation" EntitySet="Reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Client_Client" Association="Self.FK_Client_Client">
+            <End Role="Type" EntitySet="Types" />
+            <End Role="Client" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservation_Client" Association="Self.FK_Reservation_Client">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="Reservation" EntitySet="Reservations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BookReservationSystemModelStoreContainer" CdmEntityContainer="BookReservationSystemEntities">
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="BookReservationSystemModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="Book_ID" ColumnName="Book_ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="NumberInStock" ColumnName="NumberInStock" />
+                <ScalarProperty Name="Genre_ID" ColumnName="Genre_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="BookReservationSystemModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="Client_ID" ColumnName="Client_ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Type_ID" ColumnName="Type_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="BookReservationSystemModel.Genre">
+              <MappingFragment StoreEntitySet="Genre">
+                <ScalarProperty Name="Genre_ID" ColumnName="Genre_ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reservations">
+            <EntityTypeMapping TypeName="BookReservationSystemModel.Reservation">
+              <MappingFragment StoreEntitySet="Reservation">
+                <ScalarProperty Name="Reservation_ID" ColumnName="Reservation_ID" />
+                <ScalarProperty Name="Book_ID" ColumnName="Book_ID" />
+                <ScalarProperty Name="Client_ID" ColumnName="Client_ID" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Types">
+            <EntityTypeMapping TypeName="BookReservationSystemModel.Type">
+              <MappingFragment StoreEntitySet="Type">
+                <ScalarProperty Name="Type_ID" ColumnName="Type_ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

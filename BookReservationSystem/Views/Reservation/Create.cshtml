@@ -1,0 +1,81 @@
+﻿@model BookReservationSystem.Models.ViewModel.ReservationModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2 class="text-primary">Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Reservation</h4>
+    <hr />
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    @Html.HiddenFor(x => x.Reservation.Reservation_ID, new { Value = 0 })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Reservation.Book_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.Reservation.Book_ID, new SelectList(Model.Books, "Book_ID", "Name"), "-- Select --", new { @class = "form-control js-select" })
+            @Html.ValidationMessageFor(model => model.Reservation.Book_ID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Reservation.Client_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.Reservation.Client_ID, new SelectList(Model.Clients, "Client_ID", "Name"), "-- Select --", new { @class = "form-control js-select" })
+            @Html.ValidationMessageFor(model => model.Reservation.Client_ID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Reservation.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Reservation.StartDate, new { htmlAttributes = new { @class = "form-control js-date" } })
+            @Html.ValidationMessageFor(model => model.Reservation.StartDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Reservation.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Reservation.EndDate, new { htmlAttributes = new { @class = "form-control js-date" } })
+            @Html.ValidationMessageFor(model => model.Reservation.EndDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index",null, htmlAttributes: new { @class = "btn btn-secondary" })
+</div>
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            $('.js-select').select2();
+        });
+
+
+        var date = document.getElementsByClassName('js-date');
+
+        for (let i = 0; i < date.length; i++) {
+            date[i].value = new Date().Date;
+        }
+       
+
+
+
+    </script>
+}

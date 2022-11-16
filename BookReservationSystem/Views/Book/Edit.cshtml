@@ -1,0 +1,59 @@
+﻿@model BookReservationSystem.Models.ViewModel.BookGenres
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Book</h4>
+        <hr />
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        @Html.HiddenFor(x => x.Book.Book_ID, new { Value = Model.Book.Book_ID })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Book.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Book.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Book.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Book.NumberInStock, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Book.NumberInStock, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Book.NumberInStock, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Book.Genre_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ValidationMessageFor(model => model.Book.Genre_ID, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(m => m.Book.Genre_ID, new SelectList(Model.Genres, "Genre_ID", "Name"), "-- Select --", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index",null, htmlAttributes: new { @class = "btn btn-secondary" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

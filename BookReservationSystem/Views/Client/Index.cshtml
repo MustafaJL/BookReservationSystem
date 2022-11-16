@@ -1,0 +1,112 @@
+﻿@model IEnumerable<BookReservationSystem.Client>
+
+@{
+    ViewBag.Title = "Index";
+    int id = 1;
+}
+
+<h2>Client</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create",null, htmlAttributes: new { @class = "btn btn-primary" })
+</p>
+<table id="myTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Client_ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type_ID)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tbody>
+            <tr class="js-row">
+                <td>
+                    @Html.DisplayFor(modelItem => id)
+                    @{
+                        id++;
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Client_ID }, htmlAttributes: new { @class = "btn btn-success" })
+                    <button class="js-delete btn btn-danger" clientId-data="@item.Client_ID">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    }
+
+</table>
+
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+
+        $('.js-row .js-delete').on('click', function () {
+            let id = $(this);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Client/Delete/' + id.attr('clientId-data'),
+                        method: "post",
+                        success: function () {
+
+                            id.parents('.js-row').fadeOut()
+                            Swal.fire(
+                                'Deleted!',
+                                'Deleted Successfully',
+                                'success'
+                            )
+
+                        },
+
+                        error: function () {
+                            Swal.fire(
+                                'Deleted Error!',
+                                'Can not delete this item',
+                                'error'
+                            )
+                        }
+                    })
+
+                }
+            })
+
+        });
+
+
+
+    </script>
+}
